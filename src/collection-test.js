@@ -10,6 +10,12 @@ describe('$collection', function () {
       var collection = this.$collection('foo');
       expect(collection.prototype.constructor.name).toBe('Collection');
     });
+
+    it('should copy the data passed to the object to the object itself', function () {
+      var collection = this.$collection('foo');
+      var instance = new collection({foo: 'bar'});
+      expect(instance.foo).toBe('bar')
+    });
   });
 
   describe('.get()', function () {
