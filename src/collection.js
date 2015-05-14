@@ -9,6 +9,14 @@
       function Collection() {
       }
 
+      Collection.get = function() {
+        return $http.get(path).then(function (response) {
+          return response.data.map(function (element) {
+            return new resource(element);
+          });
+        });
+      }
+
       return Collection;
     };
 
