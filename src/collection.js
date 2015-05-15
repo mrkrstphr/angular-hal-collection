@@ -6,9 +6,35 @@
   function $collection($http) {
 
     var CollectionFactory = function (path, resource, key) {
+      // "private" variables
+      var items;
+      var links;
+
       function Collection(data) {
         shallowClearAndCopy(data || {}, this);
+
+        var embeddedData = data.hasOwnProperty('_embedded') && data._embedded.hasOwnProperty(key) ?
+          data._embedded[key] : [];
+
+        items = embeddedData.map(function (item) {
+          return new resource(item);
+        });
+
+        links = data.hasOwnProperty('_links') ? data._links : [];
       }
+
+      Object.defineProperties(Collection.prototype, {
+        items: {
+          get: function () {
+            return items;
+          }
+        },
+        links: {
+          get: function () {
+            return links;
+          }
+        }
+      });
 
       Collection.get = function() {
         return $http.get(path).then(function (response) {

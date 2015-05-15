@@ -28,6 +28,48 @@ describe('$collection', function () {
     });
   });
 
+  describe('.items', function () {
+    it('should transform an _embedded collection into an array of resources', function () {
+      function myResource() {}
+
+      var collection = this.$collection('/foo', myResource, 'foos');
+      var instance = new collection({_embedded: {foos: [{id: 1}, {id: 2}]}});
+
+      expect(instance.items.length).toBe(2);
+      expect(instance.items[0].constructor.name).toBe('myResource');
+    });
+
+    it('should return an empty array when there are no resources', function () {
+      function myResource() {}
+
+      var collection = this.$collection('/foo', myResource, 'foos');
+      var instance = new collection({});
+
+      expect(instance.items).toEqual([]);
+    });
+  });
+
+  describe('.links', function () {
+    it('should return the provided _links', function () {
+      function myResource() {}
+
+      var collection = this.$collection('/foo', myResource, 'foos');
+      var instance = new collection({_links: {self: {href: '/self'}}});
+
+      expect(instance.links.hasOwnProperty('self')).toBe(true);
+      expect(instance.links.self.href).toBe('/self');
+    });
+
+    it('should return an empty array when there are no links', function () {
+      function myResource() {}
+
+      var collection = this.$collection('/foo', myResource, 'foos');
+      var instance = new collection({});
+
+      expect(instance.links).toEqual([]);
+    });
+  });
+
   describe('.get()', function () {
     beforeEach(inject(function (_$httpBackend_) {
       this.$httpBackend = _$httpBackend_;
