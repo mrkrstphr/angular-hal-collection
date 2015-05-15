@@ -5,16 +5,14 @@
 
   function $collection($http) {
 
-    var CollectionFactory = function (path, resource) {
+    var CollectionFactory = function (path, resource, key) {
       function Collection(data) {
         shallowClearAndCopy(data || {}, this);
       }
 
       Collection.get = function() {
         return $http.get(path).then(function (response) {
-          return response.data.map(function (element) {
-            return new resource(element);
-          });
+          return new Collection(response.data);
         });
       }
 
@@ -37,7 +35,7 @@
     });
 
     for (var key in src) {
-      if (src.hasOwnProperty(key) && !(key.charAt(0) === '$' && key.charAt(1) === '$')) {
+      if (src.hasOwnProperty(key) && key !== '_embedded' && key !== '_links') {
         dst[key] = src[key];
       }
     }
