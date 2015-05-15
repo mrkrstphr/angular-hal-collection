@@ -4,6 +4,9 @@ describe('$collection', function () {
   beforeEach(inject(function ($collection) {
     this.$collection = $collection;
     this.collection = new $collection();
+
+    function myResource() {}
+    this.resource = myResource;
   }));
 
   describe('construction', function () {
@@ -30,9 +33,7 @@ describe('$collection', function () {
 
   describe('.items', function () {
     it('should transform an _embedded collection into an array of resources', function () {
-      function myResource() {}
-
-      var collection = this.$collection('/foo', myResource, 'foos');
+      var collection = this.$collection('/foo', this.resource, 'foos');
       var instance = new collection({_embedded: {foos: [{id: 1}, {id: 2}]}});
 
       expect(instance.items.length).toBe(2);
@@ -40,9 +41,7 @@ describe('$collection', function () {
     });
 
     it('should return an empty array when there are no resources', function () {
-      function myResource() {}
-
-      var collection = this.$collection('/foo', myResource, 'foos');
+      var collection = this.$collection('/foo', this.resource, 'foos');
       var instance = new collection({});
 
       expect(instance.items).toEqual([]);
@@ -51,9 +50,7 @@ describe('$collection', function () {
 
   describe('.links', function () {
     it('should return the provided _links', function () {
-      function myResource() {}
-
-      var collection = this.$collection('/foo', myResource, 'foos');
+      var collection = this.$collection('/foo', this.resource, 'foos');
       var instance = new collection({_links: {self: {href: '/self'}}});
 
       expect(instance.links.hasOwnProperty('self')).toBe(true);
@@ -61,12 +58,42 @@ describe('$collection', function () {
     });
 
     it('should return an empty array when there are no links', function () {
-      function myResource() {}
-
-      var collection = this.$collection('/foo', myResource, 'foos');
+      var collection = this.$collection('/foo', this.resource, 'foos');
       var instance = new collection({});
 
       expect(instance.links).toEqual([]);
+    });
+  });
+
+  describe('.hasLink()', function () {
+    it('should return true if the link is present', function () {
+      var collection = this.$collection('/foo', this.resource, 'foos');
+      var instance = new collection({_links: {self: {href: '/self'}}});
+
+      expect(instance.hasLink('self')).toBe(true);
+    });
+
+    it('should return false if the link is not present', function () {
+      var collection = this.$collection('/foo', this.resource, 'foos');
+      var instance = new collection({});
+
+      expect(instance.hasLink('self')).toBe(false);
+    });
+  });
+
+  describe('.getLink()', function () {
+    it('should return the href if the link is present', function () {
+      var collection = this.$collection('/foo', this.resource, 'foos');
+      var instance = new collection({_links: {self: {href: '/self'}}});
+
+      expect(instance.getLink('self')).toBe('/self');
+    });
+
+    it('should return false if the link is not present', function () {
+      var collection = this.$collection('/foo', this.resource, 'foos');
+      var instance = new collection({});
+
+      expect(instance.hasLink('self')).toBe(false);
     });
   });
 
@@ -76,10 +103,8 @@ describe('$collection', function () {
     }));
 
     it('should make an HTTP request for the resource and return a new collection', function () {
-      function myResource() {}
-
       this.$httpBackend.expectGET('/foos').respond({});
-      this.collection = this.$collection('/foos', myResource, 'foos');
+      this.collection = this.$collection('/foos', this.resource, 'foos');
 
       this.collection.get().then(function (newCollection) {
         expect(newCollection.prototype.constructor.name).toBe('Collection');

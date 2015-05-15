@@ -40,7 +40,17 @@
         return $http.get(path).then(function (response) {
           return new Collection(response.data);
         });
-      }
+      };
+
+      Collection.prototype.hasLink = function (name) {
+        return name in links && 'href' in links[name];
+      };
+
+      Collection.prototype.getLink = function (name) {
+        if (this.hasLink(name)) {
+          return links[name].href;
+        }
+      };
 
       return Collection;
     };
