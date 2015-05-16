@@ -60,13 +60,13 @@
 
       Collection.prototype.hasMore = function () {
         return this.hasLink('next');
-      }
+      };
 
       Collection.prototype.paginate = function () {
         if (this.hasLink('next')) {
           return retrieve(this.getLink('next'));
         }
-      }
+      };
 
       return Collection;
     };
