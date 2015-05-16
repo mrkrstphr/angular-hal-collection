@@ -8,133 +8,118 @@
 Angular HAL Collection provides for interacting with [HAL](http://stateless.co/hal_specification.html)
 collections in AngularJS.
 
-## Defining Collections
+## Installation
 
-The following code defines a module, `me.resource`, which has a resource factory defined, `User`, and a collection
-`UsersCollection`.
+Use your preferred package manager:
 
-A `$collection` is created using the URL for the collection endpoint, as well as the resource object to instantiate
-each item with.
-
-```js
-// collections.js
-(function () {
-  'use strict';
-
-  angular.module('me.resource', ['ng-resource', '$collection']);
-
-})();
-
-(function () {
-  'use strict';
-
-  UserFactory.$inject = ['$resource'];
-
-  function UserFactory($resource) {
-    return $resource('http://api.dev/users/:id');
-  }
-
-  angular.module('me.resource')
-    .factory('User', UserFactory);
-
-})();
-
-// users.collection.js
-(function () {
-  'use strict';
-
-  UsersCollection.$inject = ['$collection', 'User'];
-
-  function UsersCollection($collection, User) {
-    return $collection('http://api.dev/users', User);
-  }
-
-  angular.module('me.resource.collections')
-    .factory('UsersCollection', UsersCollection);
-
-})();
+```bash
+npm install --save angular-hal-collection
 ```
 
-## Using Collections
+Or:
 
-The following example shows how to use the `UsersCollection` defined above. A controller is created, and injected
-with the resolved collection, using the collection's `.get()` method. The data is then passed off to the template.
-
-The controller has a `.paginate()` method, which calls the collection's `.paginate()` method if the collection's
-`.hasMore()` method returns true. The results are updated in scope and rendered in the template.
-
-The template utilizes [ng-infinite-scroll](http://binarymuse.github.io/ngInfiniteScroll/) to trigger the `.paginate()`
-method.
-
-```js
-// users.js
-(function () {
-  'use strict';
-
-  resolveUsers.$inject = ['UsersCollection'];
-
-  function resolveUsers(UsersCollection) {
-    return UsersCollection.get();
-  }
-
-  moduleConfig.$inject = ['$routeProvider'];
-
-  function moduleConfig($routeProvider) {
-    $routeProvider.when('/users', {
-      controller: 'UsersController',
-      controllerAs: 'vm',
-      templateUrl: 'users/users.html',
-      resolve: {
-        usersCollection: resolveUsers
-      }
-    })
-  }
-
-  angular.module('me.users', ['ngRoute', 'me.resource.collections'])
-    .config(moduleConfig);
-
-})();
-
-// users.controller.js
-(function () {
-  'use strict';
-
-  UsersController.$inject = ['usersCollection'];
-
-  var collection;
-
-  function UsersController(usersCollection) {
-    collection = usersCollection;
-    this.users = usersCollection.items;
-  }
-
-  UsersController.prototype.paginate = function () {
-    if (collection.hasMore()) {
-      var that = this;
-
-      collection.paginate.then(function () {
-        that.users = collection.items;
-      });
-    }
-  };
-
-  angular.module('me.users')
-    .controller('UsersController', UsersController);
-
-})();
+```bash
+bower install --save angular-hal-collection
 ```
 
-The template utilizes [ng-infinite-scroll](http://binarymuse.github.io/ngInfiniteScroll/) to trigger the `.paginate()`
-method.
+## Usage
+
+Once installed, a `$collection` module is available for usage:
+
+```js
+angular.module('sample', ['$collection']);
+```
+
+The `$collection` module comes with a `$collection` factory for creating collections.
+
+### Defining Collections
+
+The `$collection()` factory expects three arguments:
+
+ * **URL**: The path to load this collection from the server
+ * **Resource**: The resource to instantiate for each item in the collection
+ * **Key**: The key where the collection is stored within the `_embedded` section of a response
+
+Example:
+
+```js
+function PlayerCollection($collection, Player) {
+  return $collection('/api/players', Player);
+}
+```
+
+### Using Collections
+
+A non-instance collection contains a simple `.get()` method to retrieve data:
+
+```js
+playerCollection.get().then(function (collection) {
+  // ...
+});
+```
+
+The returned promise involves an instantiated collection populated with the response from the provided
+URL. 
+
+#### Getting Items from the Collection
+
+The instantiated collection provides an `.items` property to access the items of the collection:
+
+```js
+playerCollection.get().then(function (collection) {
+  $scope.collection = collection;
+  $scope.players = collection.items;
+});
+```
+
+Each item will be an instantiated instace of the Resource given when the `$collection` factory was configured.
+
+#### Miscellaneous Data
+
+Miscellaneous data in the collection (data not stored in `_embedded` nor `_links`) can be accessed directly on
+the collection:
 
 ```html
-<div class="users-container" infinite-scroll="vm.paginate()" infinite-scroll-distance="3">
-  <ul class="users">
-    <li data-ng-repeat="users in vm.users">
-      {{user.name.first}} {{user.name.last}} - {{user.email}}
-    </li>
-  </ul>
-</div>
+<p>
+  Showing {{collection.count}} of {{collection.total}} players.
+</p>
 ```
 
-You can see this entire example in action [on plunker](#).
+#### Links
+
+Hyerpmedia links can be detected and accessed through two convenience methods:
+
+ * **.hasLink(name)** Returns true if the collection has a link named `name`
+ * **.getLink(name)** If the collection has a link named `name`, returns the `href` for that link
+
+#### Paginating
+
+If a `next` link is present, the collection provides two methods related to pagination:
+
+ * **.hasMore()**: Returns true if there are more results, and false otherwise.
+ * **.paginate()**: Retrieves the next page of results and returns a new collection instance.
+
+```js
+// infinate scrolling style pagination:
+$scope.collection.paginate().then(function (collection) {
+  $scope.collection = collection;
+  $scope.players = $scope.players.concat(collection.items);
+});
+```
+
+## Tests
+
+The tests can be run from the project directory:
+
+```bash
+npm run test
+```
+
+## Contributing
+
+Contributions are welcome! See [CONTRIBUTING](CONTRIBUTING.md) for more information.
+
+## License
+
+angular-hal-collection is released under the MIT License (MIT). See [LICENSE](LICENSE.md) for more information.
+
