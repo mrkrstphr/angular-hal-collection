@@ -59,7 +59,7 @@ playerCollection.get().then(function (collection) {
 ```
 
 The returned promise involves an instantiated collection populated with the response from the provided
-URL. 
+URL.
 
 #### Getting Items from the Collection
 
@@ -96,12 +96,12 @@ Hyerpmedia links can be detected and accessed through two convenience methods:
 
 If a `next` link is present, the collection provides two methods related to pagination:
 
- * **.hasMore()**: Returns true if there are more results, and false otherwise.
- * **.paginate()**: Retrieves the next page of results and returns a new collection instance.
+ * **.hasNext()**: Returns true if there are more results, and false otherwise.
+ * **.next()**: Retrieves the next page of results and returns a new collection instance.
 
 ```js
 // infinate scrolling style pagination:
-$scope.collection.paginate().then(function (collection) {
+$scope.collection.next().then(function (collection) {
   $scope.collection = collection;
   $scope.players = $scope.players.concat(collection.items);
 });
@@ -122,4 +122,3 @@ Contributions are welcome! See [CONTRIBUTING](CONTRIBUTING.md) for more informat
 ## License
 
 angular-hal-collection is released under the MIT License (MIT). See [LICENSE](LICENSE.md) for more information.
-
