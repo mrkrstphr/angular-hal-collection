@@ -112,19 +112,19 @@ describe('$collection', function () {
     });
   });
 
-  describe('.hasMore()', function () {
+  describe('.hasNext()', function () {
     it('should return true if there is a "next" link', function () {
       var instance = new (this.$collection())({_links: {next: {href: '/foos/1'}}});
-      expect(instance.hasMore()).toBe(true);
+      expect(instance.hasNext()).toBe(true);
     });
 
     it('should return false if there is not a "next" link', function () {
       var instance = new (this.$collection())({});
-      expect(instance.hasMore()).toBe(false);
+      expect(instance.hasNext()).toBe(false);
     });
   });
 
-  describe('.paginate()', function () {
+  describe('.next()', function () {
     beforeEach(inject(function (_$httpBackend_) {
       this.$httpBackend = _$httpBackend_;
     }));
@@ -133,7 +133,7 @@ describe('$collection', function () {
       this.$httpBackend.expectGET('/foos/1').respond({});
       var instance = new (this.$collection())({_links: {next: {href: '/foos/1'}}});
 
-      instance.paginate().then(function (newCollection) {
+      instance.next().then(function (newCollection) {
         expect(newCollection.prototype.constructor.name).toBe('Collection');
       });
     });

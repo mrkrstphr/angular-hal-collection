@@ -58,11 +58,11 @@
         }
       };
 
-      Collection.prototype.hasMore = function () {
+      Collection.prototype.hasNext = function () {
         return this.hasLink('next');
       };
 
-      Collection.prototype.paginate = function () {
+      Collection.prototype.next = function () {
         if (this.hasLink('next')) {
           return retrieve(this.getLink('next'));
         }
