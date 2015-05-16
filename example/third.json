@@ -1,0 +1,28 @@
+{
+  "count": 4,
+  "total": 14,
+  "_embedded": {
+    "players": [
+      {
+        "number": 53,
+        "name": "Joaquin Benoit",
+        "position": "Pitcher"
+      },
+      {
+        "number": 46,
+        "name": "José Valverde",
+        "position": "Pitcher"
+      },
+      {
+        "number": 15,
+        "name": "Brandon Inge",
+        "position": "Infielder"
+      },
+      {
+        "number": 25,
+        "name": "Ryan Raburn",
+        "position": "Outfielder"
+      }
+    ]
+  }
+}

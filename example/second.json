@@ -1,0 +1,38 @@
+{
+  "count": 5,
+  "total": 14,
+  "_embedded": {
+    "players": [
+      {
+        "number": 27,
+        "name": "Jhonny Peralta",
+        "position": "Short Stop"
+      },
+      {
+        "number": 32,
+        "name": "Don Kelly",
+        "position": "Left Field"
+      },
+      {
+        "number": 14,
+        "name": "Austin Jackson",
+        "position": "Center Field"
+      },
+      {
+        "number": 26,
+        "name": "Brennan Boesch",
+        "position": "Right Field"
+      },
+      {
+        "number": 21,
+        "name": "Delmon Young",
+        "position": "Designated Hitter"
+      }
+    ]
+  },
+  "_links": {
+    "next": {
+      "href": "/example/third.json"
+    }
+  }
+}

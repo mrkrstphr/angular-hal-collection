@@ -1,0 +1,26 @@
+<h2>2012 Detroit Tigers Roster</h2>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Name</th>
+      <th>Position</th>
+    </tr>
+  </thead>
+  <tr data-ng-repeat="player in vm.players">
+    <td>{{player.number}}</td>
+    <td>{{player.name}}</td>
+    <td>{{player.position}}</td>
+  </tr>
+</table>
+
+<div class="clearfix">
+  <div class="pull-left">
+    Showing {{vm.players.length}} of {{vm.total}} players.
+  </div>
+
+  <button class="btn btn-primary pull-right" type="button" data-ng-click="vm.paginate()" data-ng-disabled="!vm.hasMore()">
+    Show More
+  </button>
+</div>

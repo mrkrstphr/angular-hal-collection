@@ -1,0 +1,38 @@
+{
+  "count": 5,
+  "total": 14,
+  "_embedded": {
+    "players": [
+      {
+        "number": 13,
+        "name": "Alex Avila",
+        "position": "Catcher"
+      },
+      {
+        "number": 37,
+        "name": "Max Scherzer",
+        "position": "Pitcher"
+      },
+      {
+        "number": 28,
+        "name": "Prince Fielder",
+        "position": "First Base"
+      },
+      {
+        "number": 4,
+        "name": "Omar Infante",
+        "position": "Second Base"
+      },
+      {
+        "number": 24,
+        "name": "Miguel Cabrera",
+        "position": "Third Base"
+      }
+    ]
+  },
+  "_links": {
+    "next": {
+      "href": "/example/second.json"
+    }
+  }
+}
