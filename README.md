@@ -87,7 +87,7 @@ the collection:
 
 #### Links
 
-Hyerpmedia links can be detected and accessed through two convenience methods:
+Hyperpmedia links can be detected and accessed through two convenience methods:
 
  * **.hasLink(name)** Returns true if the collection has a link named `name`
  * **.getLink(name)** If the collection has a link named `name`, returns the `href` for that link
@@ -104,7 +104,7 @@ Returns `undefined` otherwise.
 `undefined` otherwise.
 
 ```js
-// infinate scrolling style pagination:
+// infinite scrolling style pagination:
 $scope.collection.next().then(function (collection) {
   $scope.collection = collection;
   $scope.players = $scope.players.concat(collection.items);
