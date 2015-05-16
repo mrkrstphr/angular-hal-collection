@@ -32,6 +32,33 @@ angular.module('sample', ['$collection']);
 
 The `$collection` module comes with a `$collection` factory for creating collections.
 
+### Options
+
+The following options can be passed as the fourth argument to `$collection()`:
+
+ * **previous**: The name of the link for the previous page of items in the collection
+ * **next**: The name of the link for the next page of items in the collection
+
+Example:
+
+```js
+$collection('/api/players', Player, 'players', {previous: 'back', next: 'forward'});
+```
+
+Will work for a result matching:
+
+```json
+{
+  "_links": {
+    "previous": {"href": "/players?page=1"},
+    "next": {"href": "/players?page=3"}
+  },
+  "_embedded": {
+    "players": []
+  }
+}
+```
+
 ### Defining Collections
 
 The `$collection()` factory expects three arguments:
@@ -39,12 +66,13 @@ The `$collection()` factory expects three arguments:
  * **URL**: The path to load this collection from the server
  * **Resource**: The resource to instantiate for each item in the collection
  * **Key**: The key where the collection is stored within the `_embedded` section of a response
+ * **Options**: An optional object of options. See Options.
 
 Example:
 
 ```js
 function PlayerCollection($collection, Player) {
-  return $collection('/api/players', Player);
+  return $collection('/api/players', Player, 'players');
 }
 ```
 
@@ -102,6 +130,8 @@ The collection provides four methods related to pagination:
 Returns `undefined` otherwise.
  * **.next()**: Returns a promise resolving a new collection with the next results, if `.hasNext()` is true. Returns
 `undefined` otherwise.
+
+Note: the `prev` and `next` link names can be overridden by the options mentioned above.
 
 ```js
 // infinite scrolling style pagination:

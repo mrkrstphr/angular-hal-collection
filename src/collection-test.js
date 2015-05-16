@@ -122,6 +122,11 @@ describe('$collection', function () {
       var instance = new (this.$collection())({});
       expect(instance.hasNext()).toBe(false);
     });
+
+    it('should respect custom next links', function () {
+      var instance = new (this.$collection(null, null, null, {next: 'foop'}))({_links: {foop: {href: ''}}});
+      expect(instance.hasNext()).toBe(true);
+    });
   });
 
   describe('.next()', function () {
@@ -132,6 +137,15 @@ describe('$collection', function () {
     it('should make an HTTP request for the next page', function () {
       this.$httpBackend.expectGET('/foos/1').respond({});
       var instance = new (this.$collection())({_links: {next: {href: '/foos/1'}}});
+
+      instance.next().then(function (newCollection) {
+        expect(newCollection.prototype.constructor.name).toBe('Collection');
+      });
+    });
+
+    it('should respect custom next links', function () {
+      this.$httpBackend.expectGET('/foos/1').respond({});
+      var instance = new (this.$collection(null, null, null, {next: 'foop'}))({_links: {foop: {href: '/foos/1'}}});
 
       instance.next().then(function (newCollection) {
         expect(newCollection.prototype.constructor.name).toBe('Collection');
@@ -149,6 +163,11 @@ describe('$collection', function () {
       var instance = new (this.$collection())({});
       expect(instance.hasPrevious()).toBe(false);
     });
+
+    it('should respect custom previous links', function () {
+      var instance = new (this.$collection(null, null, null, {previous: 'foop'}))({_links: {foop: {href: ''}}});
+      expect(instance.hasPrevious()).toBe(true);
+    });
   });
 
   describe('.previous()', function () {
@@ -159,6 +178,15 @@ describe('$collection', function () {
     it('should make an HTTP request for the next page', function () {
       this.$httpBackend.expectGET('/foos/1').respond({});
       var instance = new (this.$collection())({_links: {prev: {href: '/foos/1'}}});
+
+      instance.previous().then(function (newCollection) {
+        expect(newCollection.prototype.constructor.name).toBe('Collection');
+      });
+    });
+
+    it('should respect custom previous links', function () {
+      this.$httpBackend.expectGET('/foos/1').respond({});
+      var instance = new (this.$collection(null, null, null, {previous: 'foop'}))({_links: {foop: {href: '/foos/1'}}});
 
       instance.previous().then(function (newCollection) {
         expect(newCollection.prototype.constructor.name).toBe('Collection');

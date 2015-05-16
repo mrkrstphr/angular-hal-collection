@@ -5,10 +5,17 @@
 
   function $collection($http) {
 
-    var CollectionFactory = function (path, resource, key) {
+    var defaults = {
+      previous: 'prev',
+      next: 'next'
+    };
+
+    var CollectionFactory = function (path, resource, key, config) {
       // "private" variables
       var items;
       var links;
+
+      config = mergeObjects(defaults, config);
 
       // "private" methods
       function retrieve(href) {
@@ -16,7 +23,6 @@
           return new Collection(response.data);
         });
       }
-
 
       function Collection(data) {
         shallowClearAndCopy(data || {}, this);
@@ -59,22 +65,22 @@
       };
 
       Collection.prototype.hasPrevious = function () {
-        return this.hasLink('prev');
+        return this.hasLink(config.previous);
       };
 
       Collection.prototype.hasNext = function () {
-        return this.hasLink('next');
+        return this.hasLink(config.next);
       };
 
       Collection.prototype.previous = function () {
-        if (this.hasLink('prev')) {
-          return retrieve(this.getLink('prev'));
+        if (this.hasPrevious()) {
+          return retrieve(this.getLink(config.previous));
         }
       };
 
       Collection.prototype.next = function () {
-        if (this.hasLink('next')) {
-          return retrieve(this.getLink('next'));
+        if (this.hasNext()) {
+          return retrieve(this.getLink(config.next));
         }
       };
 
@@ -103,6 +109,21 @@
     }
 
     return dst;
+  }
+
+  function mergeObjects(uno, dos) {
+    var copy = {};
+
+    var merge = function (obj) {
+      for (var key in obj) {
+        copy[key] = obj[key];
+      }
+    };
+
+    merge(uno);
+    merge(dos);
+
+    return copy;
   }
 
   angular.module('$collection', ['ngResource'])
