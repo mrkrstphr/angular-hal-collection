@@ -2,7 +2,7 @@
 
 ![Build Status](https://img.shields.io/travis/mrkrstphr/angular-hal-collection.svg?style=flat-square)
 ![Latest Version](https://img.shields.io/npm/v/angular-hal-collection.svg?style=flat-square)
-![License: MIT](https://img.shields.io/npm/l/angular-hal-collection.svg?style=flat-square)
+![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)
 ![Gluten Free](https://img.shields.io/badge/gluten-free-brightgreen.svg?style=flat-square)
 
 Angular HAL Collection provides for interacting with [HAL](http://stateless.co/hal_specification.html)
