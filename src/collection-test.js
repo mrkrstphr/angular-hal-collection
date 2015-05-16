@@ -104,9 +104,36 @@ describe('$collection', function () {
 
     it('should make an HTTP request for the resource and return a new collection', function () {
       this.$httpBackend.expectGET('/foos').respond({});
-      this.collection = this.$collection('/foos', this.resource, 'foos');
+      var collection = this.$collection('/foos', this.resource, 'foos');
 
-      this.collection.get().then(function (newCollection) {
+      collection.get().then(function (newCollection) {
+        expect(newCollection.prototype.constructor.name).toBe('Collection');
+      });
+    });
+  });
+
+  describe('.hasMore()', function () {
+    it('should return true if there is a "next" link', function () {
+      var instance = new (this.$collection())({_links: {next: {href: '/foos/1'}}});
+      expect(instance.hasMore()).toBe(true);
+    });
+
+    it('should return false if there is not a "next" link', function () {
+      var instance = new (this.$collection())({});
+      expect(instance.hasMore()).toBe(false);
+    });
+  });
+
+  describe('.paginate()', function () {
+    beforeEach(inject(function (_$httpBackend_) {
+      this.$httpBackend = _$httpBackend_;
+    }));
+
+    it('should make an HTTP request for the next page', function () {
+      this.$httpBackend.expectGET('/foos/1').respond({});
+      var instance = new (this.$collection())({_links: {next: {href: '/foos/1'}}});
+
+      instance.paginate().then(function (newCollection) {
         expect(newCollection.prototype.constructor.name).toBe('Collection');
       });
     });

@@ -10,6 +10,14 @@
       var items;
       var links;
 
+      // "private" methods
+      function retrieve(href) {
+        return $http.get(href).then(function (response) {
+          return new Collection(response.data);
+        });
+      }
+
+
       function Collection(data) {
         shallowClearAndCopy(data || {}, this);
 
@@ -37,9 +45,7 @@
       });
 
       Collection.get = function() {
-        return $http.get(path).then(function (response) {
-          return new Collection(response.data);
-        });
+        return retrieve(path);
       };
 
       Collection.prototype.hasLink = function (name) {
@@ -51,6 +57,16 @@
           return links[name].href;
         }
       };
+
+      Collection.prototype.hasMore = function () {
+        return this.hasLink('next');
+      }
+
+      Collection.prototype.paginate = function () {
+        if (this.hasLink('next')) {
+          return retrieve(this.getLink('next'));
+        }
+      }
 
       return Collection;
     };
