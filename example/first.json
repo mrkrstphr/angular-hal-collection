@@ -32,7 +32,7 @@
   },
   "_links": {
     "next": {
-      "href": "/example/second.json"
+      "href": "second.json"
     }
   }
 }

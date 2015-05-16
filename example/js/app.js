@@ -10,7 +10,7 @@
   PlayerCollection.$inject = ['$collection', 'Player'];
 
   function PlayerCollection($collection, Player) {
-    return $collection('/example/first.json', Player, 'players');
+    return $collection('first.json', Player, 'players');
   }
 
   angular.module('sample.resources', ['ngResource', '$collection'])
@@ -59,7 +59,7 @@
     $routeProvider.when('/', {
       controller: 'PlayersController',
       controllerAs: 'vm',
-      templateUrl: '/example/players.html'
+      templateUrl: 'players.html'
     });
   }
 
