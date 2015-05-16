@@ -58,8 +58,18 @@
         }
       };
 
+      Collection.prototype.hasPrevious = function () {
+        return this.hasLink('prev');
+      };
+
       Collection.prototype.hasNext = function () {
         return this.hasLink('next');
+      };
+
+      Collection.prototype.previous = function () {
+        if (this.hasLink('prev')) {
+          return retrieve(this.getLink('prev'));
+        }
       };
 
       Collection.prototype.next = function () {

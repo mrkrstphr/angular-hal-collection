@@ -138,4 +138,31 @@ describe('$collection', function () {
       });
     });
   });
+
+  describe('.hasPrevious()', function () {
+    it('should return true if there is a "prev" link', function () {
+      var instance = new (this.$collection())({_links: {prev: {href: '/foos/1'}}});
+      expect(instance.hasPrevious()).toBe(true);
+    });
+
+    it('should return false if there is not a "prev" link', function () {
+      var instance = new (this.$collection())({});
+      expect(instance.hasPrevious()).toBe(false);
+    });
+  });
+
+  describe('.previous()', function () {
+    beforeEach(inject(function (_$httpBackend_) {
+      this.$httpBackend = _$httpBackend_;
+    }));
+
+    it('should make an HTTP request for the next page', function () {
+      this.$httpBackend.expectGET('/foos/1').respond({});
+      var instance = new (this.$collection())({_links: {prev: {href: '/foos/1'}}});
+
+      instance.previous().then(function (newCollection) {
+        expect(newCollection.prototype.constructor.name).toBe('Collection');
+      });
+    });
+  });
 });

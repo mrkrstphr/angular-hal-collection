@@ -94,10 +94,14 @@ Hyerpmedia links can be detected and accessed through two convenience methods:
 
 #### Paginating
 
-If a `next` link is present, the collection provides two methods related to pagination:
+The collection provides four methods related to pagination:
 
- * **.hasNext()**: Returns true if there are more results, and false otherwise.
- * **.next()**: Retrieves the next page of results and returns a new collection instance.
+ * **.hasPrevious()**: Returns true if there is a `prev` link on the collection, and false otherwise.
+ * **.hasNext()**: Returns true if there is a `next` link on the collection, and false otherwise.
+ * **.previous()**: Returns a promise resolving a new collection with the previous results, if `.hasPrevious()` is true.
+Returns `undefined` otherwise.
+ * **.next()**: Returns a promise resolving a new collection with the next results, if `.hasNext()` is true. Returns
+`undefined` otherwise.
 
 ```js
 // infinate scrolling style pagination:
