@@ -126,7 +126,7 @@
     return copy;
   }
 
-  angular.module('$collection', ['ngResource'])
+  angular.module('hal-collection', ['ngResource'])
     .factory('$collection', $collection);
 
 })();

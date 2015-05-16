@@ -1,5 +1,5 @@
 describe('$collection', function () {
-  beforeEach(module('$collection'));
+  beforeEach(module('hal-collection'));
 
   beforeEach(inject(function ($collection) {
     this.$collection = $collection;

@@ -27,10 +27,10 @@ bower install --save angular-hal-collection
 Once installed, a `$collection` module is available for usage:
 
 ```js
-angular.module('sample', ['$collection']);
+angular.module('sample', ['hal-collection']);
 ```
 
-The `$collection` module comes with a `$collection` factory for creating collections.
+The `hal-collection` module comes with a `$collection` factory for creating collections.
 
 ### Options
 
