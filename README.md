@@ -24,7 +24,7 @@ bower install --save angular-hal-collection
 
 ## Usage
 
-Once installed, a `$collection` module is available for usage:
+Once installed, a `hal-collection` module is available for usage:
 
 ```js
 angular.module('sample', ['hal-collection']);
