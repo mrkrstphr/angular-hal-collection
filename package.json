@@ -25,7 +25,8 @@
     "karma-chrome-launcher": "^0.1.12",
     "karma-jasmine": "^0.3.5",
     "karma-phantomjs-launcher": "^0.1.4",
-    "require-dir": "^0.3.0"
+    "require-dir": "^0.3.0",
+    "yargs": "^3.9.0"
   },
   "scripts": {
     "test": "node_modules/karma/bin/karma start karma.conf.js --single-run",
