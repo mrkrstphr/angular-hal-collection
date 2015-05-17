@@ -1,7 +1,7 @@
 {
   "name": "angular-hal-collection",
   "description": "Provides for interacting with HAL collections in AngularJS",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "license": "MIT",
   "author": {
     "name": "Kristopher Wilson",
